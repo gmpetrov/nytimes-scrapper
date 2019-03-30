@@ -49,6 +49,8 @@ def scrap_year_article_links(uri):
 
 def scrap_nytimes(year):
 
+    print "scrapping year: " + str(year)
+
     years_links = scrap_year_links(year)
 
     all_year_articles_urls = []
@@ -56,16 +58,24 @@ def scrap_nytimes(year):
     for each in years_links:
         all_year_articles_urls.extend(scrap_year_article_links(each))
         
-    
+
+    nb_urls = len(all_year_articles_urls)
+
+    print str(nb_urls) + " articles urls found"
+
     articles_matching_regex = []
 
-    for article_url in all_year_articles_urls:
+    for index, article_url in enumerate(all_year_articles_urls):
+        print "scrapping article (" + str(index + 1) + "/" + str(nb_urls) + ")"
+
         content = scrap_article(article_url)
         if keep_article(str(content)):
             articles_matching_regex.append(url)
             print article_url
         else:
-            print "does not match regex"
+            print "does not match regex :" + article_url
+
+    print str(len(articles_matching_regex)) + " articles " + "matched regex"
 
     return articles_matching_regex
 
