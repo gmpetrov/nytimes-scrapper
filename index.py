@@ -3,7 +3,6 @@ import requests
 from functools import reduce
 from bs4 import BeautifulSoup
 
-REGEX = re.compile(r'.*millennial.*', re.IGNORECASE)
 BASE_YEAR_URL = "https://spiderbites.nytimes.com/{year}/"
 
 def scrap_article(url):
@@ -12,7 +11,7 @@ def scrap_article(url):
     return BeautifulSoup(html, "html.parser")
 
 def keep_article(content):
-    return REGEX.match(content) is not None
+    return re.search('millennial', content, re.IGNORECASE) is not None
 
 def scrap_year_links(year):
     url = BASE_YEAR_URL.format(year=str(year))
@@ -49,7 +48,7 @@ def scrap_year_article_links(uri):
 
 def scrap_nytimes(year):
 
-    print "scrapping year: " + str(year)
+    print("scrapping year: " + str(year))
 
     years_links = scrap_year_links(year)
 
@@ -70,7 +69,7 @@ def scrap_nytimes(year):
 
         content = scrap_article(article_url)
         if keep_article(str(content)):
-            articles_matching_regex.append(url)
+            articles_matching_regex.append(article_url)
             print "article match: " + article_url
         else:
             print "does not match regex :" + article_url
