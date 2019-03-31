@@ -71,7 +71,7 @@ def scrap_nytimes(year):
         content = scrap_article(article_url)
         if keep_article(str(content)):
             articles_matching_regex.append(url)
-            print article_url
+            print "article match: " + article_url
         else:
             print "does not match regex :" + article_url
 
